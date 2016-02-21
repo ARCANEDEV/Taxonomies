@@ -1,6 +1,6 @@
 {
     "name":        "arcanedev/taxonomies",
-    "description": "Taxonomies package to manage tags and categories",
+    "description": "Taxonomies package provides a categories & tags management system for laravel projects.",
     "keywords":    ["arcanedev", "arcanesoft", "laravel", "taxonomies", "categories", "tags"],
     "homepage":    "https://github.com/ARCANEDEV/Taxonomies",
     "authors": [
