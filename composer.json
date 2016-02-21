@@ -1,0 +1,42 @@
+{
+    "name":        "arcanedev/taxonomies",
+    "description": "Taxonomies package to manage tags and categories",
+    "keywords":    ["arcanedev", "arcanesoft", "laravel", "taxonomies", "categories", "tags"],
+    "homepage":    "https://github.com/ARCANEDEV/Taxonomies",
+    "authors": [
+        {
+            "name":     "ARCANEDEV",
+            "email":    "arcanedev.maroc@gmail.com",
+            "homepage": "https://github.com/arcanedev-maroc"
+        }
+    ],
+    "type":    "library",
+    "license": "MIT",
+    "require": {
+        "php":               ">=5.5.9",
+        "arcanedev/support": "~3.0",
+        "baum/baum":         "~1.1"
+    },
+    "require-dev": {
+        "phpunit/phpcov":    "~2.0|~3.0",
+        "phpunit/phpunit":   "~4.0|~5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Arcanedev\\Taxonomies\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Arcanedev\\Taxonomies\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "testbench": "composer require --dev \"orchestra/testbench=~3.0\""
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
