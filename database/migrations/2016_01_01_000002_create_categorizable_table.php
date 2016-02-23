@@ -2,14 +2,13 @@
 
 use Arcanedev\Taxonomies\Bases\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Kalnoy\Nestedset\Nestedset;
 
 /**
- * Class     CreateCategoriesTable
+ * Class     CreateCategorizableTable
  *
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class CreateCategoriesTable extends Migration
+class CreateCategorizableTable extends Migration
 {
     /* ------------------------------------------------------------------------------------------------
      |  Constructor
@@ -19,7 +18,7 @@ class CreateCategoriesTable extends Migration
     {
         parent::__construct();
 
-        $this->setTable(config('taxonomies.categories.table', 'categories'));
+        $this->setTable(config('taxonomies.categories.morph.table', 'categories_relations'));
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -32,11 +31,8 @@ class CreateCategoriesTable extends Migration
     public function up()
     {
         $this->createSchema(function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            NestedSet::columns($table);
+            $table->integer('category_id');
+            $table->morphs(config('taxonomies.categories.morph.name', 'categorizable'));
             $table->timestamps();
         });
     }
