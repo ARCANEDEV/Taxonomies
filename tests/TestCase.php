@@ -59,4 +59,16 @@ abstract class TestCase extends BaseTestCase
             'prefix'   => '',
         ]);
     }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    protected function migrate()
+    {
+        $this->artisan('migrate', [
+            '--database' => 'testbench',
+            '--realpath' => realpath(__DIR__ . '/../database/migrations'),
+        ]);
+    }
 }
