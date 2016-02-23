@@ -15,7 +15,7 @@
     "require": {
         "php":               ">=5.5.9",
         "arcanedev/support": "~3.0",
-        "baum/baum":         "~1.1"
+        "kalnoy/nestedset": "^4.0"
     },
     "require-dev": {
         "phpunit/phpcov":    "~2.0|~3.0",
