@@ -7,6 +7,16 @@ use Kalnoy\Nestedset\Node;
  *
  * @package  Arcanedev\Taxonomies\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @property  int             $id
+ * @property  string          $name
+ * @property  string          $slug
+ * @property  string          $description
+ * @property  int             $_lft
+ * @property  int             $_lft
+ * @property  int             $parent_id
+ * @property  \Carbon\Carbon  $created_at
+ * @property  \Carbon\Carbon  $updated_at
  */
 class Category extends Node
 {
