@@ -24,9 +24,12 @@ trait Categorizable
      */
     public function categories()
     {
-        return $this->morphToMany(Category::class,
-            config('taxonomies.categories.morph.name', 'categorizable'),
-            config('taxonomies.categories.morph.table', 'categories_relations')
+        $configs = config('taxonomies.categories', []);
+
+        return $this->morphToMany(
+            array_get($configs, 'model',       Category::class),
+            array_get($configs, 'morph.name',  'categorizable'),
+            array_get($configs, 'morph.table', 'categories_relations')
         );
     }
 
