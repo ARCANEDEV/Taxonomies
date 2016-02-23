@@ -59,8 +59,6 @@ class TaxonomiesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerConfig();
-
-        $this->app->register(\Baum\Providers\BaumServiceProvider::class);
     }
 
     /**
