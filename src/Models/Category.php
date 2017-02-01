@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\Taxonomies\Models;
 
-use Kalnoy\Nestedset\Node;
+use Arcanedev\LaravelNestedSet\NodeTrait;
+use Arcanedev\Taxonomies\Bases\Model;
 
 /**
  * Class     Category
@@ -13,13 +14,19 @@ use Kalnoy\Nestedset\Node;
  * @property  string          $slug
  * @property  string          $description
  * @property  int             $_lft
- * @property  int             $_lft
+ * @property  int             $_rgt
  * @property  int             $parent_id
  * @property  \Carbon\Carbon  $created_at
  * @property  \Carbon\Carbon  $updated_at
  */
-class Category extends Node
+class Category extends Model
 {
+    /* ------------------------------------------------------------------------------------------------
+     |  Traits
+     | ------------------------------------------------------------------------------------------------
+     */
+    use NodeTrait;
+
     /* ------------------------------------------------------------------------------------------------
      |  Properties
      | ------------------------------------------------------------------------------------------------
@@ -63,6 +70,6 @@ class Category extends Node
      */
     public static function tree()
     {
-        return static::get()->toTree()->toArray();
+        return self::get()->toTree()->toArray();
     }
 }

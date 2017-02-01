@@ -15,13 +15,6 @@ class TaxonomiesServiceProvider extends ServiceProvider
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Vendor name.
-     *
-     * @var string
-     */
-    protected $vendor  = 'arcanedev';
-
-    /**
      * Package name.
      *
      * @var string
@@ -66,13 +59,10 @@ class TaxonomiesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            $this->getConfigFile() => config_path("$this->package.php")
-        ], 'config');
+        parent::boot();
 
-        $this->publishes([
-            $this->getBasePath() . '/database/migrations/' => database_path('migrations')
-        ], 'migrations');
+        $this->publishConfig();
+        $this->publishMigrations();
     }
 
     /**

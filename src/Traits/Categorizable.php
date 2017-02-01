@@ -2,6 +2,7 @@
 
 use Arcanedev\Taxonomies\Models\Category;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 /**
  * Class     Categorizable
@@ -27,9 +28,9 @@ trait Categorizable
         $configs = config('taxonomies.categories', []);
 
         return $this->morphToMany(
-            array_get($configs, 'model',       Category::class),
-            array_get($configs, 'morph.name',  'categorizable'),
-            array_get($configs, 'morph.table', 'categories_relations')
+            Arr::get($configs, 'model',       Category::class),
+            Arr::get($configs, 'morph.name',  'categorizable'),
+            Arr::get($configs, 'morph.table', 'categories_relations')
         );
     }
 
@@ -37,28 +38,25 @@ trait Categorizable
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
-    public function categoriesList()
-    {
-        return $this->categories()->lists('name', 'id')->toArray();
-    }
-
     /**
      * @param  array  $categories
      */
     public function categorize($categories)
     {
         foreach ($categories as $category) {
-            $this->addCategory($category);
+            $this->attachCategory($category);
         }
     }
 
     /**
+     * Detach all categories.
+     *
      * @param  array  $categories
      */
     public function uncategorize($categories)
     {
         foreach ($categories as $category) {
-            $this->removeCategory($category);
+            $this->detachCategory($category);
         }
     }
 
@@ -73,9 +71,11 @@ trait Categorizable
     }
 
     /**
-     * @param Model $category
+     * Attach a category.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $category
      */
-    public function addCategory(Model $category)
+    public function attachCategory(Model $category)
     {
         if ( ! $this->categories->contains($category->getKey())) {
             $this->categories()->attach($category);
@@ -83,10 +83,25 @@ trait Categorizable
     }
 
     /**
-     * @param Model $category
+     * Detach a category.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $category
      */
-    public function removeCategory(Model $category)
+    public function detachCategory(Model $category)
     {
         $this->categories()->detach($category);
+    }
+
+    /**
+     * Get the categories as a list with [id => name].
+     *
+     * @return array
+     */
+    public function categoriesList()
+    {
+        return $this->categories()
+            ->get()
+            ->pluck('name', 'id')
+            ->toArray();
     }
 }
