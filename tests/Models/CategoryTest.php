@@ -59,7 +59,11 @@ class CategoryTest extends TestCase
         $table = $db->connection('testbench')
             ->table(config('taxonomies.categories.table', 'categories'));
 
-        $data  = include __DIR__. '/../fixtures/data/categories.php';
+        $date = \Carbon\Carbon::now();
+        $data = array_map(function ($category) use ($date) {
+            return $category + ['created_at' => $date, 'updated_at' => $date];
+        }, include __DIR__.'/../fixtures/data/categories.php');
+
         $table->insert($data);
     }
 }
