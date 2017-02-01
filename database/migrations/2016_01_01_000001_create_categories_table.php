@@ -2,7 +2,7 @@
 
 use Arcanedev\Taxonomies\Bases\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Kalnoy\Nestedset\Nestedset;
+use Arcanedev\LaravelNestedSet\Utilities\NestedSet;
 
 /**
  * Class     CreateCategoriesTable
