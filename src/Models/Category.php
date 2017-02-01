@@ -9,15 +9,15 @@ use Arcanedev\Taxonomies\Bases\Model;
  * @package  Arcanedev\Taxonomies\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
- * @property  int             $id
- * @property  string          $name
- * @property  string          $slug
- * @property  string          $description
- * @property  int             $_lft
- * @property  int             $_rgt
- * @property  int             $parent_id
- * @property  \Carbon\Carbon  $created_at
- * @property  \Carbon\Carbon  $updated_at
+ * @property  int             id
+ * @property  string          name
+ * @property  string          slug
+ * @property  string          description
+ * @property  int             _lft
+ * @property  int             _rgt
+ * @property  int             parent_id
+ * @property  \Carbon\Carbon  created_at
+ * @property  \Carbon\Carbon  updated_at
  */
 class Category extends Model
 {
@@ -36,7 +36,16 @@ class Category extends Model
      *
      * @var array
      */
-    protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'name', 'slug', 'description', '_lft', '_rgt', 'parent_id',
+    ];
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = true;
 
     /* ------------------------------------------------------------------------------------------------
      |  Relationships

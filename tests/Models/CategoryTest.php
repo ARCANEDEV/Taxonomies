@@ -54,16 +54,11 @@ class CategoryTest extends TestCase
      */
     private function seedCategories()
     {
-        /** @var  \Illuminate\Database\DatabaseManager  $db */
-        $db    = $this->app['db'];
-        $table = $db->connection('testbench')
-            ->table(config('taxonomies.categories.table', 'categories'));
-
         $date = \Carbon\Carbon::now();
         $data = array_map(function ($category) use ($date) {
             return $category + ['created_at' => $date, 'updated_at' => $date];
         }, include __DIR__.'/../fixtures/data/categories.php');
 
-        $table->insert($data);
+        \Arcanedev\Taxonomies\Models\Category::insert($data);
     }
 }
