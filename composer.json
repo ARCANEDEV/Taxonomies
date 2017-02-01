@@ -14,8 +14,8 @@
     "license": "MIT",
     "require": {
         "php":                         ">=5.6.4",
-        "arcanedev/support":           "~3.0",
-        "arcanedev/laravel-nestedset": "~0.1"
+        "arcanedev/support":           "~4.0",
+        "arcanedev/laravel-nestedset": "~1.0"
     },
     "require-dev": {
         "phpunit/phpcov":  "~3.0",

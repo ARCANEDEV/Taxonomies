@@ -1,5 +1,6 @@
 <?php namespace Arcanedev\Taxonomies\Tests;
 
+use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
 
 /**
@@ -24,6 +25,7 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
+            \Orchestra\Database\ConsoleServiceProvider::class,
             \Arcanedev\Taxonomies\TaxonomiesServiceProvider::class,
         ];
     }
