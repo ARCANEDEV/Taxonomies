@@ -7,7 +7,11 @@ return [
     ],
 
     'categories' => [
-        'table' => 'categories',
-        'model' => \Arcanedev\Taxonomies\Models\Category::class,
+        'table'       => 'categories',
+        'model'       => \Arcanedev\Taxonomies\Models\Category::class,
+        'morph' => [
+            'name'  => 'categorizable',
+            'table' => 'categories_relations',
+        ],
     ],
 ];

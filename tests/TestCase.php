@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\Taxonomies\Tests;
 
-use Orchestra\Testbench\TestCase as BaseTestCase;
+use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
 
 /**
  * Class     TestCase
@@ -10,17 +10,6 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
  */
 abstract class TestCase extends BaseTestCase
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        //$this->app->loadDeferredProviders();
-    }
-
     /* ------------------------------------------------------------------------------------------------
      |  Laravel Functions
      | ------------------------------------------------------------------------------------------------
@@ -35,7 +24,7 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
-            \Arcanedev\Taxonomies\TaxonomiesServiceProvider::class
+            \Arcanedev\Taxonomies\TaxonomiesServiceProvider::class,
         ];
     }
     /**
@@ -68,6 +57,18 @@ abstract class TestCase extends BaseTestCase
             'driver'   => 'sqlite',
             'database' => ':memory:',
             'prefix'   => '',
+        ]);
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    protected function migrate()
+    {
+        $this->artisan('migrate', [
+            '--database' => 'testbench',
+            '--realpath' => realpath(__DIR__ . '/../database/migrations'),
         ]);
     }
 }

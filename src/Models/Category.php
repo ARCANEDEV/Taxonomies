@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\Taxonomies\Models;
 
-use Baum\Node;
+use Arcanedev\LaravelNestedSet\NodeTrait;
+use Arcanedev\Taxonomies\Bases\Model;
 
 /**
  * Class     Category
@@ -9,113 +10,75 @@ use Baum\Node;
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
  * @property  int             id
- * @property  Category        parent
- * @property  int             parent_id
- * @property  int             lft
- * @property  int             rgt
- * @property  int             depth
  * @property  string          name
  * @property  string          slug
  * @property  string          description
+ * @property  int             _lft
+ * @property  int             _rgt
+ * @property  int             parent_id
  * @property  \Carbon\Carbon  created_at
  * @property  \Carbon\Carbon  updated_at
  */
-class Category extends Node
+class Category extends Model
 {
     /* ------------------------------------------------------------------------------------------------
-     |  Constructor
+     |  Traits
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Category constructor.
-     *
-     * @param array $attributes
-     */
-    public function __construct(array $attributes)
-    {
-        parent::__construct($attributes);
-    }
-
-    /**
-     * The "booting" method of the model.
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::updating(function (Category $category) {
-            // Baum triggers a parent move, which puts the item last in the list,
-            // even if the old and new parents are the same
-            if ($category->isParentIdSame()) {
-                $category->stopBaumParentMove();
-            }
-        });
-    }
+    use NodeTrait;
 
     /* ------------------------------------------------------------------------------------------------
-     |  Getters & Setters
+     |  Properties
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Get path attribute.
+     * The attributes that aren't mass assignable.
      *
-     * Accessor for path attribute, which is a string consisting of the ancestors
-     * of each node, separated by " > ".
-     *
-     * @return string
+     * @var array
      */
-    public function getPathAttribute()
+    protected $fillable = [
+        'name', 'slug', 'description', '_lft', '_rgt', 'parent_id',
+    ];
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = true;
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Relationships
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function categorizable()
     {
-        $return    = [];
+        return $this->morphTo();
+    }
 
-        foreach ($this->getAncestors() as $ancestor) {
-            $return[] = $ancestor->name;
-        }
-
-        $return[] = $this->name;
-
-        return implode(' > ', $return);
+    /**
+     * @param  string  $related
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function entries($related)
+    {
+        return $this->morphedByMany(
+            $related,
+            config('taxonomies.categories.morph.name', 'categorizable'),
+            config('taxonomies.categories.morph.table', 'categories_relations')
+        );
     }
 
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Check for dirty parent ID.
-     *
-     * Returns true if the parent_id value in the database is different to the current
-     * value in the model's dirty attributes
-     *
-     * @return bool
-     */
-    protected function isParentIdSame()
+    public static function tree()
     {
-        /** @var self $oldCategory */
-        $oldCategory          = self::where('id', $this->id)->first();
-        $dirty                = $this->getDirty();
-        $isParentColumnSet    = isset($dirty[$this->getParentColumnName()]);
-        $isNewParentSameAsOld = false;
-
-        if ($isParentColumnSet) {
-            $isNewParentSameAsOld = ($dirty[$this->getParentColumnName()] === $oldCategory->parent->id);
-        }
-
-        return $isParentColumnSet && $isNewParentSameAsOld;
-    }
-
-    /**
-     * Reset parent ID.
-     *
-     * Removes the parent_id field from the model's attributes and sets $moveToNewParentId
-     * static property on the parent Baum\Node model class to false to prevent Baum from
-     * triggering a move. This can be required because Baum triggers a parent move, which
-     * puts the item last in the list, even if the old and new parents are the same.
-     */
-    protected function stopBaumParentMove()
-    {
-        unset($this->{$this->getParentColumnName()});
-
-        self::$moveToNewParentId = false;
+        return self::get()->toTree()->toArray();
     }
 }
